@@ -262,3 +262,35 @@ model_names = ['Model 1', 'Model 2', 'Model 3', 'Model 4']
 rsquared_df = pd.DataFrame({'Model': model_names, 'R-squared': rsquared_values})
 
 print(rsquared_df) #Model 4 has high R square value = 0.95
+
+################################################################
+from sklearn.linear_model import Lasso, Ridge
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error, r2_score
+
+# Split the data into training and testing sets
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+
+# LASSO Regression
+lasso_model = Lasso(alpha=1.0)  # You can adjust the alpha parameter
+lasso_model.fit(X_train, Y_train)
+lasso_pred_train = lasso_model.predict(X_train)
+lasso_pred_test = lasso_model.predict(X_test)
+
+# Ridge Regression
+ridge_model = Ridge(alpha=1.0)  # You can adjust the alpha parameter
+ridge_model.fit(X_train, Y_train)
+ridge_pred_train = ridge_model.predict(X_train)
+ridge_pred_test = ridge_model.predict(X_test)
+
+# Evaluate LASSO model
+print("LASSO Training MSE:", mean_squared_error(Y_train, lasso_pred_train))
+print("LASSO Testing MSE:", mean_squared_error(Y_test, lasso_pred_test))
+print("LASSO Training R-squared:", r2_score(Y_train, lasso_pred_train))
+print("LASSO Testing R-squared:", r2_score(Y_test, lasso_pred_test))
+
+# Evaluate Ridge model
+print("Ridge Training MSE:", mean_squared_error(Y_train, ridge_pred_train))
+print("Ridge Testing MSE:", mean_squared_error(Y_test, ridge_pred_test))
+print("Ridge Training R-squared:", r2_score(Y_train, ridge_pred_train))
+print("Ridge Testing R-squared:", r2_score(Y_test, ridge_pred_test))

@@ -531,3 +531,55 @@ rsquared_df = pd.DataFrame({'Model': model_names, 'R-squared': rsquared_values})
 print(rsquared_df)
 
 #model 8 has best R-squared value = 0.850697
+
+############################################################################################################
+
+from sklearn.linear_model import Lasso
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error, r2_score
+
+# Assuming X and Y are already defined (independent and dependent variables)
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+
+# Standardize the features
+from sklearn.preprocessing import StandardScaler
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+# Fit LASSO regression model
+lasso = Lasso(alpha=0.1)  # You can adjust the alpha parameter
+lasso.fit(X_train_scaled, Y_train)
+
+# Predictions
+Y_pred_lasso = lasso.predict(X_test_scaled)
+
+# Evaluate the model
+mse_lasso = mean_squared_error(Y_test, Y_pred_lasso)
+rmse_lasso = np.sqrt(mse_lasso)
+r2_lasso = r2_score(Y_test, Y_pred_lasso)
+
+print("LASSO Regression Results:")
+print("Mean Squared Error:", mse_lasso.round(3))
+print("Root Mean Squared Error:", rmse_lasso.round(3))
+print("R-squared:", r2_lasso.round(3))
+
+##################################################################################
+from sklearn.linear_model import Ridge
+
+# Fit Ridge regression model
+ridge = Ridge(alpha=1.0)  # You can adjust the alpha parameter
+ridge.fit(X_train_scaled, Y_train)
+
+# Predictions
+Y_pred_ridge = ridge.predict(X_test_scaled)
+
+# Evaluate the model
+mse_ridge = mean_squared_error(Y_test, Y_pred_ridge)
+rmse_ridge = np.sqrt(mse_ridge)
+r2_ridge = r2_score(Y_test, Y_pred_ridge)
+
+print("\nRidge Regression Results:")
+print("Mean Squared Error:", mse_ridge.round(3))
+print("Root Mean Squared Error:", rmse_ridge.round(3))
+print("R-squared:", r2_ridge.round(3))
